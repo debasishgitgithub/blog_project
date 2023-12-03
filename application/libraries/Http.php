@@ -100,7 +100,7 @@ class Http
       // return false;
     }
   }
-  
+
   public function auth($methods, $roles)
   {
     if (!is_array($roles)) $roles = [$roles];
@@ -145,7 +145,7 @@ class Http
           }
         } else {
           // redirect to login page
-          redirect(base_url("login"), 'refresh');
+          redirect(base_url("portal/login"), 'refresh');
         }
       }
     } else {
@@ -155,7 +155,7 @@ class Http
 
   public function session_get($key = null)
   {
-    
+
     if (isset($this->ci->session->userdata['logged_in']->type)) {
       $u = $this->ci->session->userdata['logged_in'];
       if (!is_null($key)) {
@@ -175,13 +175,13 @@ class Http
           return $d->data->$key;
         }
       }
-    }
-    else if (isset($this->ci->session->userdata['logged_in']->type)) {
+    } else if (isset($this->ci->session->userdata['logged_in']->type)) {
       $u = $this->ci->session->userdata['logged_in'];
       if (!is_null($key)) {
         return isset($u->$key) ? $u->$key : "";
       } else return $u;
-    } else return false;
+    }
+    return false;
   }
 
 

@@ -7,10 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AdminLTE 3 | Blank Page</title>
 
-    
+
     <!-- jQuery -->
     <script src="<?= base_url(); ?>assets/plugins/jquery/jquery.min.js"></script>
-    
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="<?= base_url(); ?>assets/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
@@ -39,7 +39,7 @@
     <script src="<?= base_url('assets/') ?>plugins/toastr/toastr.min.js"></script>
     <!-- <script src="<?= base_url('assets/') ?>plugins/sweetalert2/sweetalert2.min.js"></script> -->
     <script src="<?= base_url('assets/') ?>plugins/validation/jquery.validate.min.js"></script> <!-- for valication -->
-    <script src="<?= base_url('assets/') ?>plugins/validation/additional-methods.min.js"></script>  <!-- for valication -->
+    <script src="<?= base_url('assets/') ?>plugins/validation/additional-methods.min.js"></script> <!-- for valication -->
     <!-- <script src="<?= base_url('assets/') ?>plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script> -->
     <!-- <script src="<?= base_url('assets/') ?>js/ekko-lightbox.js"></script> -->
 
@@ -75,7 +75,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="../../index3.html" class="nav-link">Home</a>
+                    <a href="<?= portal_url() ?>" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="#" class="nav-link">Contact</a>
@@ -191,6 +191,44 @@
                         <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
                     </div>
                 </li>
+
+                <li class="nav-item dropdown user-menu">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                        <img src="<?= base_url('assets/dist/img/user2-160x160.jpg'); ?>" class="user-image img-circle elevation-2" alt="User Image">
+                        <span class="d-none d-md-inline"><?= $this->http->session_get("username") ?></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <!-- User image -->
+                        <li class="user-header bg-primary">
+                            <img src="<?= base_url('assets/dist/img/user2-160x160.jpg'); ?>" class="img-circle elevation-2" alt="User Image">
+
+                            <p>
+                                <?= $this->http->session_get("username") ?>
+                                <small>Member since <?= date("jS M Y", strtotime($this->http->session_get("created_on"))); ?></small>
+                            </p>
+                        </li>
+                        <!-- Menu Body -->
+                        <!-- <li class="user-body">
+                            <div class="row">
+                                <div class="col-4 text-center">
+                                    <a href="#">Followers</a>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <a href="#">Sales</a>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <a href="#">Friends</a>
+                                </div>
+                            </div>
+                        </li> -->
+                        <!-- Menu Footer-->
+                        <li class="user-footer">
+                            <!-- <a href="#" class="btn btn-default btn-flat">Profile</a> -->
+                            <a href="<?= portal_url('logout'); ?>" class="btn btn-default btn-flat float-right">Sign out</a>
+                        </li>
+                    </ul>
+                </li>
+
                 <!-- <li class="nav-item">
                     <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                         <i class="fas fa-expand-arrows-alt"></i>
@@ -208,22 +246,14 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="../../index3.html" class="brand-link">
-                <img src="<?= base_url(); ?>assets/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">AdminLTE 3</span>
+            <a href="<?= portal_url(); ?>" class="brand-link">
+                <img src="<?= base_url(Logo); ?>" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light"><?= HF_title; ?></span>
             </a>
 
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <img src="<?= base_url(); ?>assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                    </div>
-                    <div class="info">
-                        <a href="#" class="d-block">Alexander Pierce</a>
-                    </div>
-                </div>
 
                 <!-- SidebarSearch Form -->
                 <div class="form-inline">
@@ -260,7 +290,7 @@
                             </ul>
                         </li> -->
                         <li class="nav-item">
-                            <a href="<?= sidebar_base_url(); ?>" class="nav-link">
+                            <a href="<?= base_url(); ?>" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -268,7 +298,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= sidebar_base_url('category'); ?>" class="nav-link">
+                            <a href="<?= base_url('category'); ?>" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>
                                     Blog Category
