@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Blank Page</title>
+    <title><?=$title;?></title>
 
 
     <!-- jQuery -->
@@ -290,7 +290,7 @@
                             </ul>
                         </li> -->
                         <li class="nav-item">
-                            <a href="<?= base_url(); ?>" class="nav-link">
+                            <a href="<?= portal_url(); ?>" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -298,7 +298,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= base_url('category'); ?>" class="nav-link">
+                            <a href="<?= portal_url('category'); ?>" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>
                                     Blog Category
