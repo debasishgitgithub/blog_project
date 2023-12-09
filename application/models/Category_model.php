@@ -21,6 +21,19 @@ class Category_model extends CI_Model
         return $this->db->get()->row();
     }
 
+    public function get_all($status = null,  $user_id = null)
+    {
+        $this->db->select("*");
+        $this->db->from($this->table);
+        if (!is_null($status)) {
+            $this->db->where("status", $status);
+        }
+        if (!empty($user_id)) {
+            $this->db->where("user_id", $user_id);
+        }
+        return $this->db->get()->result();
+    }
+
     public function insert_batch($data)
     {
         $this->db->insert_batch($this->table, $data);
@@ -42,9 +55,12 @@ class Category_model extends CI_Model
         $this->db->update($this->table);
         return $this->db->affected_rows();
     }
-    public function delete($id)
+    public function delete($id, $user_id=null)
     {
         $this->db->where("id", $id);
+        if (!empty($user_id)) {
+            $this->db->where("user_id", $user_id);
+        }
         $this->db->delete($this->table);
         return $this->db->affected_rows();
     }

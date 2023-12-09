@@ -9,7 +9,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right font-weight-bold">
-            <li class="breadcrumb-item"><a href="<?= base_url('dashboard') ?>"><i class="fa fa-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="<?= portal_url('dashboard') ?>"><i class="fa fa-home"></i></a></li>
             <li class="breadcrumb-item active">Category</li>
           </ol>
         </div>
@@ -92,9 +92,9 @@
             <div class="card-body">
               <form action="" id="update_cat">
                 <div class="form-group">
-                  <label for="edit_cat"> Category Name</label>
+                  <label for="category_name"> Category Name</label>
                   <input type="hidden" name="cat_id" id="cat_id" required>
-                  <input type="text" name="edit_cat" id="edit_cat" class="form-control" required>
+                  <input type="text" name="category_name" id="category_name" class="form-control" required>
                 </div>
 
                 <div class="row">
@@ -113,7 +113,7 @@
       </div>
     </div>
 
-    
+
     <div class="loading">
       <!-- loading -->
     </div>
@@ -123,218 +123,235 @@
 <!-- /.content-wrapper -->
 <script>
   $(document).ready(function() {
-    // cat_list();
 
-    // function cat_list() {
-    //   $.ajax({
-    //     url: '<?= base_url("grouping/get_category") ?>',
-    //     type: 'post',
-    //     dataType: 'json',
-    //     success: function(data) {
-    //       if (data.status_code == 200) {
-    //         $('#cat-body').html(data.response);
-    //         tooltps(); // for auto tooltip add
-    //       } else if (data.status_code == 403 && data.status == false) {
-    //         page_redirect(data.response);
-    //       } else {
-    //         toastr.error('Something went wrong!!');
-    //       }
-    //     },
-    //     error: function() {
-    //       toastr.error("Error! Please refresh the page!");
-    //     }
-    //   });
-    // }
+    let table_html = {
+      row: `<tr data-id="[[CATEGORY_ID]]">
+							<td>[[SL_NO]]</td>
+							<td>[[CATEGORY_NAME]]</td>
+							<td class="py-0 align-middle">
+								<div class="btn-group btn-group-sm">
+                    [[BUTTONS]]
+								</div>
+							</td>
+						</tr>`,
+      button: {
+        edit: `<button class="edit_cat btn btn-info" title="Edit" data-toggle="tooltip" data-html="true">
+                <i class="fas fa-edit"></i>
+              </button>`,
+        delete: `<button class="del_cat btn btn-danger" title="Delete" data-toggle="tooltip" data-html="true">
+                  <i class="fas fa-trash-alt"></i>
+                </button>`,
+      },
+    };
 
+    load_category();
 
-      $("#new_cat").validate({
-        rules: {
-          cat_name: "required"
-        },
-        messages: {
-          cat_name: "Please enter category name",
-        },
-        errorElement: "div",
-        errorPlacement: function(error, element) {
-          // Add the `invalid-feedback` class to the error element
-          error.addClass("invalid-feedback");
-
-          if (element.prop("type") === "checkbox") {
-            error.insertAfter(element.next("label"));
+    function load_category() {
+      $.ajax({
+        url: '<?= base_url("category/get_all") ?>',
+        type: 'get',
+        dataType: 'json',
+        success: function(data) {
+          if (data.code == 200) {
+            $('#cat-body').html(
+              data.data.map((v, i) => {
+                return table_html.row.replace(/\[\[CATEGORY_ID\]\]/g, v.id)
+                  .replace(/\[\[SL_NO\]\]/g, ++i)
+                  .replace(/\[\[CATEGORY_NAME\]\]/g, v.category_name)
+                  .replace(/\[\[BUTTONS\]\]/g, Object.values(table_html.button).join(''));
+              })
+            );
+          } else if (data.code == 403 && data.status == false) {
+            page_redirect(data.response);
           } else {
-            error.insertAfter(element);
+            toastr.error('Something went wrong!!');
           }
         },
-        highlight: function(element, errorClass, validClass) {
-          $(element).addClass("is-invalid").removeClass("is-valid");
+        error: function() {
+          toastr.error("Error! Please refresh the page!");
+        }
+      });
+    }
+
+
+    $("#new_cat").validate({
+      rules: {
+        cat_name: "required"
+      },
+      messages: {
+        cat_name: "Please enter category name",
+      },
+      errorElement: "div",
+      errorPlacement: function(error, element) {
+        // Add the `invalid-feedback` class to the error element
+        error.addClass("invalid-feedback");
+
+        if (element.prop("type") === "checkbox") {
+          error.insertAfter(element.next("label"));
+        } else {
+          error.insertAfter(element);
+        }
+      },
+      highlight: function(element, errorClass, validClass) {
+        $(element).addClass("is-invalid").removeClass("is-valid");
+      },
+      unhighlight: function(element, errorClass, validClass) {
+        $(element).addClass("is-valid").removeClass("is-invalid");
+      }
+    });
+
+    $("#update_cat").validate({
+      rules: {
+        category_name: "required"
+      },
+      messages: {
+        category_name: "Please enter category name",
+      },
+      errorElement: "div",
+      errorPlacement: function(error, element) {
+        // Add the `invalid-feedback` class to the error element
+        error.addClass("invalid-feedback");
+
+        if (element.prop("type") === "checkbox") {
+          error.insertAfter(element.next("label"));
+        } else {
+          error.insertAfter(element);
+        }
+      },
+      highlight: function(element, errorClass, validClass) {
+        $(element).addClass("is-invalid").removeClass("is-valid");
+      },
+      unhighlight: function(element, errorClass, validClass) {
+        $(element).addClass("is-valid").removeClass("is-invalid");
+      }
+    });
+
+
+
+    // new Category
+    $('body').on('click', '.save_new_cat', function() {
+
+      if (!$('#new_cat').valid()) {
+        toastr.error('Fill all fields!!');
+        return false;
+      }
+      var formData = $('#new_cat').serialize();
+      $.ajax({
+        url: '<?= base_url("category/save") ?>',
+        method: 'POST',
+        data: formData,
+        dataType: 'json',
+        beforeSend: function() {
+          $('.loading').show();
         },
-        unhighlight: function(element, errorClass, validClass) {
-          $(element).addClass("is-valid").removeClass("is-invalid");
+        success: function(res) {
+          $('.loading').hide();
+          if (res.code == 200) {
+            $('#new_cat').trigger('reset');
+            $('.cat-tog').trigger('click');
+            load_category();
+            toastr.success(res.message);
+          } else {
+            toastr.error(res.message);
+          }
+        },
+        error: function() {
+          $('.loading').hide();
+          toastr.error("Error! Please refresh the page!");
         }
       });
 
-      $("#update_cat").validate({
-        rules: {
-          edit_cat: "required"
-        },
-        messages: {
-          edit_cat: "Please enter category name",
-        },
-        errorElement: "div",
-        errorPlacement: function(error, element) {
-          // Add the `invalid-feedback` class to the error element
-          error.addClass("invalid-feedback");
+    });
 
-          if (element.prop("type") === "checkbox") {
-            error.insertAfter(element.next("label"));
-          } else {
-            error.insertAfter(element);
-          }
-        },
-        highlight: function(element, errorClass, validClass) {
-          $(element).addClass("is-invalid").removeClass("is-valid");
-        },
-        unhighlight: function(element, errorClass, validClass) {
-          $(element).addClass("is-valid").removeClass("is-invalid");
-        }
-      });
+    // edit Category
+    $('body').on('click', '.edit_cat', function() {
+      var id = $(this).parent().parent().parent().data('id');
+      var cat_name = $(this).parent().parent().prev().html();
+      if (id != "" && cat_name != "") {
+        $('#cat_id').val(id);
+        $('#category_name').val(cat_name);
+        $('.update-card').animate({
+          height: 'show'
+        });
+      }
+    });
 
 
+    $('body').on('click', '.update_cat', function() {
+      var id = $('#cat_id').val();
+      var cat_name = $('#category_name').val();
 
-      // new Category
-      $('body').on('click', '.save_new_cat', function() {
-
-        if (!$('#new_cat').valid()) {
-          toastr.error('Fill all fields!!');
-          return false;
-        }
-        var formData = $('#new_cat').serialize();
+      if (!$('#update_cat').valid()) {
+        toastr.error('Fill all fields!!');
+        return false;
+      }
+      if (id != "" && cat_name != "") {
         $.ajax({
-          url: '<?= base_url("grouping/category_new") ?>',
+          url: `<?= base_url("category/save/") ?>${id}`,
           method: 'POST',
-          data: formData,
+          dataType: 'json',
+          data: {cat_name},
+          beforeSend: function() {
+            $('.loading').show();
+          },
+          success: function(res) {
+            $('.loading').hide();
+            if (res.code == 200) {
+              $('#update_cat').trigger('reset');
+              $('.update-card').hide();
+              load_category();
+              toastr.success(res.message);
+            } else {
+              toastr.error(res.message);
+            }
+          },
+          error: function() {
+            $('.loading').hide();
+            toastr.error('error! please refress the page!');
+          }
+        });
+      } else {
+        toastr.error('Category name is required');
+      }
+    });
+
+    //delete category
+    $('body').on('click', '.del_cat', function() {
+      var id = $(this).parent().parent().parent().data('id');
+      if (confirm('Are you sure ?')) {
+        $.ajax({
+          url: `<?= base_url("category/delete/") ?>${id}`,
+          type: 'POST',
+          data: {
+            id: id
+          },
           dataType: 'json',
           beforeSend: function() {
             $('.loading').show();
           },
           success: function(res) {
             $('.loading').hide();
-            if (res.status_code == 200) {
-              $('#new_cat').trigger('reset');
-              $('.cat-tog').trigger('click');
-              cat_list();
+            if (res.code == 200) {
+              load_category();
               toastr.success(res.message);
-            } else if (res.status_code == 403 && res.status == false) {
+            } else if (res.code == 403 && res.status == false) {
               page_redirect(res.response);
             } else if (res.status == false) {
               toastr.error(res.message);
             } else {
               toastr.error('Something went wrong!!');
             }
+
           },
           error: function() {
             $('.loading').hide();
-            toastr.error("Error! Please refresh the page!");
+            toastr.error("error found!");
           }
         });
-
-      });
-
-      // edit Category
-      $('body').on('click', '.edit_cat', function() {
-        var id = $(this).parent().parent().parent().data('id');
-        var cat_name = $(this).parent().parent().siblings('#cat').html();
-        if (id != "" && cat_name != "") {
-          $('#cat_id').val(id);
-          $('#edit_cat').val(cat_name);
-          $('.update-card').animate({
-            height: 'show'
-          });
-        }
-      });
-      $('body').on('click', '.update_cat', function() {
-        var id = $('#cat_id').val();
-        var cat = $('#edit_cat').val();
-
-        if (!$('#update_cat').valid()) {
-          toastr.error('Fill all fields!!');
-          return false;
-        }
-        if (id != "" && cat != "") {
-          $.ajax({
-            url: '<?= base_url("grouping/update_category") ?>',
-            method: 'POST',
-            dataType: 'json',
-            data: {
-              cat_id: id,
-              cat_name: cat
-            },
-            beforeSend: function() {
-              $('.loading').show();
-            },
-            success: function(res) {
-              $('.loading').hide();
-              if (res.status_code == 200) {
-                $('#update_cat').trigger('reset');
-                $('.update-card').hide();
-                cat_list();
-                toastr.success(res.message);
-              } else if (res.status_code == 403 && res.status == false) {
-                page_redirect(res.response);
-              } else if (res.status == false) {
-                toastr.error(res.message);
-              } else {
-                toastr.error('Something went wrong!!');
-              }
-            },
-            error: function() {
-              $('.loading').hide();
-              toastr.error('error! please refress the page!');
-            }
-          });
-        } else {
-          toastr.error('please refress the page! try again!');
-        }
-      });
-
-      //delete category
-      $('body').on('click', '.del_cat', function() {
-        var row = $(this).parent().parent().parent();
-        var id = row.data('id');
-        if (confirm('are you sure want to delete')) {
-          $.ajax({
-            url: '<?= base_url("grouping/category_del") ?>',
-            type: 'POST',
-            data: {
-              id: id
-            },
-            dataType: 'json',
-            beforeSend: function() {
-              $('.loading').show();
-            },
-            success: function(res) {
-              $('.loading').hide();
-              if (res.status_code == 200) {
-                cat_list();
-                toastr.success(res.message);
-              } else if (res.status_code == 403 && res.status == false) {
-                page_redirect(res.response);
-              } else if (res.status == false) {
-                toastr.error(res.message);
-              } else {
-                toastr.error('Something went wrong!!');
-              }
-
-            },
-            error: function() {
-              $('.loading').hide();
-              toastr.error("error found!");
-            }
-          });
-        } else {
-          return false;
-        }
-      });
+      } else {
+        return false;
+      }
+    });
 
   });
 </script>
