@@ -38,9 +38,12 @@ $route['default_controller'] = 'welcome';
 $route['portal'] = 'home/index';
 
 group_route("portal", [
-    "dashboard" => 'home/index',
-    "category" => 'category/index',
     "login" => 'auth/index',
     "logout" => 'auth/session_logout',
-    "session_login" => 'auth/session_login',
+
+    
+    "dashboard" => 'home/index',
+    "category" => 'category/index',
+    "blog" => 'blog/index',
+    "blog_image" => 'blog_image/index',
 ]);

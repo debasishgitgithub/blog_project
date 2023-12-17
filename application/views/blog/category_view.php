@@ -9,7 +9,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right font-weight-bold">
-            <li class="breadcrumb-item"><a href="<?= portal_url('dashboard') ?>"><i class="fa fa-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="<?= portal_url('') ?>"><i class="fa fa-home"></i></a></li>
             <li class="breadcrumb-item active">Category</li>
           </ol>
         </div>

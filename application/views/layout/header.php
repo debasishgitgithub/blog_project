@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?=$title;?></title>
+    <title><?= $title; ?></title>
 
 
     <!-- jQuery -->
@@ -55,6 +55,14 @@
     <!-- bs datepicker -->
     <script src="<?= base_url('assets/') ?>plugins/bootstrap-datepicker-1.9.0/js/bootstrap-datepicker.min.js"></script>
 
+    <style>
+        .fix-add-btn {
+            bottom: 1.25rem;
+            position: fixed;
+            right: 1.25rem;
+            z-index: 1032;
+        }
+    </style>
 
     <!-- Bootstrap 4 -->
 
@@ -302,6 +310,14 @@
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>
                                     Blog Category
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= portal_url('blog'); ?>" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Blogs
                                 </p>
                             </a>
                         </li>
