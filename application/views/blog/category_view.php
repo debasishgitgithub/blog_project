@@ -157,7 +157,7 @@
               data.data.map((v, i) => {
                 return table_html.row.replace(/\[\[CATEGORY_ID\]\]/g, v.id)
                   .replace(/\[\[SL_NO\]\]/g, ++i)
-                  .replace(/\[\[CATEGORY_NAME\]\]/g, v.category_name)
+                  .replace(/\[\[CATEGORY_NAME\]\]/g, v.name)
                   .replace(/\[\[BUTTONS\]\]/g, Object.values(table_html.button).join(''));
               })
             );

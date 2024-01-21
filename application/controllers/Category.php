@@ -27,13 +27,13 @@ class Category extends CI_Controller
 			$u = $this->http->auth(['post'], 'SUPER_ADMIN');
 			if($cat_name = $this->http->request->get('cat_name')){
 				if(empty($id)){
-					if($this->category_model->insert(['category_name'=>$cat_name, 'user_id'=>$u->user_id, 'status'=>1])){
+					if($this->category_model->insert(['name'=>$cat_name, 'user_id'=>$u->user_id, 'status'=>1])){
 						$this->http->response->create(200, 'Category insert successful');
 					} else {
 						$this->http->response->create(203, 'Category insert failure');
 					}
 				} else {
-					if($this->category_model->update($id, ['category_name'=>$cat_name, 'status'=>1])){
+					if($this->category_model->update($id, ['name'=>$cat_name, 'status'=>1])){
 						$this->http->response->create(200, 'Category update successful');
 					} else {
 						$this->http->response->create(203, 'Category update failure');

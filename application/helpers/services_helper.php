@@ -18,7 +18,7 @@ if (!function_exists('view')) {
   {
     try {
       $ci = &get_instance();
-      $ci->load->view("layout/header", ['title' => $title,'Logo' =>Logo ,'HF_title' => HF_title]);
+      $ci->load->view("layout/header", ['title' => $title, 'Logo' => Logo, 'HF_title' => HF_title]);
       if (!is_null($body_view_path)) {
         $ci->load->view($body_view_path, $bdata);
       }
@@ -30,8 +30,9 @@ if (!function_exists('view')) {
   }
 }
 
-if(!function_exists('pp')){
-  function pp($value = null){
+if (!function_exists('pp')) {
+  function pp($value = null)
+  {
     echo "<pre>";
     print_r($value);
     echo "</pre>";
@@ -39,8 +40,9 @@ if(!function_exists('pp')){
   }
 }
 
-if(!function_exists('portal_url')){
-  function portal_url($segment = ''){
+if (!function_exists('portal_url')) {
+  function portal_url($segment = '')
+  {
     return base_url("portal/{$segment}");
   }
 }

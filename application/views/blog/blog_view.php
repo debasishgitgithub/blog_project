@@ -20,7 +20,7 @@
   <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
-
+      <?= get_message();?>
       <!-- Default box -->
       <div class="card card-primary">
         <div class="card-header">
@@ -48,5 +48,5 @@
 
   <!-- /.content -->
 </div>
-<a href="<?= portal_url("") ?>" class="btn btn-danger fix-add-btn " title="New Blog"><i class="fa fa-plus"></i></a>
+<a href="<?= portal_url("blog/save") ?>" class="btn btn-danger fix-add-btn " title="New Blog"><i class="fa fa-plus"></i></a>
 <!-- /.content-wrapper -->

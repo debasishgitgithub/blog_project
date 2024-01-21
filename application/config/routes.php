@@ -37,13 +37,19 @@ $route['default_controller'] = 'welcome';
 
 $route['portal'] = 'home/index';
 
+// LOGIN AND DASHBOARD
 group_route("portal", [
     "login" => 'auth/index',
     "logout" => 'auth/session_logout',
 
-    
+
     "dashboard" => 'home/index',
     "category" => 'category/index',
-    "blog" => 'blog/index',
-    "blog_image" => 'blog_image/index',
+]);
+
+// BLOG
+group_route("portal/blog",[
+    ""=>'blog/index',
+    "save"=>'blog/save',
+    "save/(:num)"=>'blog/save/$1',
 ]);
