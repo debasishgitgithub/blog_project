@@ -5,6 +5,7 @@ class Blog_model extends CI_Model
 {
 
     private $table = 'blogs';
+    private $tbl_category = 'category';
 
     public function get($id, $status = null,  $user_id = null)
     {
@@ -23,13 +24,14 @@ class Blog_model extends CI_Model
 
     public function get_all($status = null,  $user_id = null)
     {
-        $this->db->select("*");
-        $this->db->from($this->table);
+        $this->db->select("b.*, c.name AS category_name");
+        $this->db->from("$this->table b");
+        $this->db->join("$this->tbl_category c", "c.id = b.category_id");
         if (!is_null($status)) {
-            $this->db->where("status", $status);
+            $this->db->where("b.status", $status);
         }
         if (!empty($user_id)) {
-            $this->db->where("user_id", $user_id);
+            $this->db->where("b.user_id", $user_id);
         }
         return $this->db->get()->result();
     }

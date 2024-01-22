@@ -15,7 +15,7 @@ class Blog_img_model extends CI_Model
         return $this->db->get()->row();
     }
 
-    public function get_all($where_in = [])
+    public function get_all($where_in = [], $blog_id = null)
     {
         $this->db->select("*");
         $this->db->from($this->table);
@@ -24,6 +24,8 @@ class Blog_img_model extends CI_Model
                 $this->db->where_in($column, $valuesArr);
             }
         }
+        if(!empty($blog_id)) $this->db->where('blog_id', $blog_id);
+        // pp($this->db->get_compiled_select());
         return $this->db->get()->result();
     }
 

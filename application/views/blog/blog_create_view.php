@@ -1,15 +1,19 @@
 <?php
 $blog_card_header = 'Create';
 $title = '';
+$short_content = '';
 $content = '';
 $category_id = '';
+$status = '1';
 $action_url = base_url('blog/save');
 
 if (isset($blg_dtls) && !empty($blg_dtls->id)) {
   $blog_card_header = 'Update';
   $title = $blg_dtls->title;
+  $short_content = $blg_dtls->short_content;
   $content = $blg_dtls->content;
   $category_id = $blg_dtls->category_id;
+  $status = $blg_dtls->status;
   $action_url = base_url("blog/save/{$blg_dtls->id}");
 }
 
@@ -39,7 +43,7 @@ if (isset($blg_dtls) && !empty($blg_dtls->id)) {
     <div class="container-fluid">
 
       <!-- alert message show here  -->
-      <?=get_message();?>
+      <?= get_message(); ?>
 
       <div class="row">
         <div class="col-md-12">
@@ -55,7 +59,7 @@ if (isset($blg_dtls) && !empty($blg_dtls->id)) {
 
                 <div class="form-group">
                   <label for="title">Title</label>
-                  <input type="text" class="form-control form-control-sm <?= set_form_error('title', false); ?>" name="title" placeholder="Blog Title">
+                  <input type="text" class="form-control form-control-sm <?= set_form_error('title', false); ?>" name="title" placeholder="Blog Title" value="<?= set_value('title', $title) ?>">
                   <?= set_form_error('title'); ?>
                 </div>
 
@@ -64,14 +68,20 @@ if (isset($blg_dtls) && !empty($blg_dtls->id)) {
                   <?php
                   $category_list = ['' => 'select category'] + array_column($category_dtls, 'name', 'id');
                   $error_class = set_form_error('category_id', false);
-                  echo form_dropdown("category_id", $category_list, set_value('category_id'), "class='form-control form-control-sm {$error_class}'");
+                  echo form_dropdown("category_id", $category_list, set_value('category_id', $category_id), "class='form-control form-control-sm {$error_class}'");
                   echo set_form_error('category_id');
                   ?>
                 </div>
 
                 <div class="form-group">
+                  <label for="short_content">Short Content</label>
+                  <textarea class="form-control form-control-sm <?= set_form_error('short_content', false); ?>" name="short_content" rows="2"><?= set_value('short_content', $short_content) ?></textarea>
+                  <?= set_form_error('short_content'); ?>
+                </div>
+
+                <div class="form-group">
                   <label for="content">Content</label>
-                  <textarea class="form-control form-control-sm <?= set_form_error('content', false); ?>" name="content" rows="3"></textarea>
+                  <textarea class="form-control form-control-sm <?= set_form_error('content', false); ?>" name="content" rows="3"><?= set_value('content', $content) ?></textarea>
                   <?= set_form_error('content'); ?>
                 </div>
 
@@ -83,10 +93,10 @@ if (isset($blg_dtls) && !empty($blg_dtls->id)) {
 
                 <div class="form-group">
                   <label for="status">Status</label>
-                  <select name="status" class="form-control form-control-sm <?= $error_class ?>">
-                    <option value="1" selected>Active</option>
-                    <option value="0">Inactive</option>
-                  </select>
+                  <?php
+                  $statusArr = ['0' => 'Inactive', '1' => 'Active'];
+                  echo form_dropdown('status', $statusArr, set_value('status', $status), "class='form-control form-control-sm'");
+                  ?>
                 </div>
 
                 <button type="submit" class="btn btn-primary float-right m-2">Submit</button>
@@ -101,7 +111,7 @@ if (isset($blg_dtls) && !empty($blg_dtls->id)) {
 
   <!-- /.content -->
 </div>
-<button type="button" class="btn btn-danger fix-add-btn" id="addImageBtn" title="New Blog Images"><i class="fa fa-plus"></i></button>
+
 <!-- /.content-wrapper -->
 <script>
   $(document).ready(function() {

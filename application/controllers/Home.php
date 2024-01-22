@@ -10,7 +10,7 @@ class Home extends CI_Controller
 
     public function index()
     {
-        $this->http->auth('get', 'SUPER_ADMIN');
+        $this->http->auth('get', ['SUPER_ADMIN','SUPPORT_ADMIN']);
         view('blog/dashboard', [], 'Dashboard | Blog');
     }
 }
