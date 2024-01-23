@@ -41,8 +41,11 @@
     <script src="<?= base_url('assets/') ?>plugins/validation/jquery.validate.min.js"></script> <!-- for valication -->
     <script src="<?= base_url('assets/') ?>plugins/validation/additional-methods.min.js"></script> <!-- for valication -->
     <!-- <script src="<?= base_url('assets/') ?>plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script> -->
-    <!-- <script src="<?= base_url('assets/') ?>js/ekko-lightbox.js"></script> -->
 
+
+    <!-- ekko lignt box -->
+    <link href="<?= base_url('assets/plugins/ekko-lightbox/ekko-lightbox.css') ?>" rel="stylesheet">
+    <script src="<?= base_url('assets/') ?>plugins/ekko-lightbox/ekko-lightbox.js"></script>
 
     <script src="<?= base_url('assets/') ?>plugins/bootstrap4-toggle/js/bootstrap4-toggle.min.js"></script>
     <!-- jQuery UI -->

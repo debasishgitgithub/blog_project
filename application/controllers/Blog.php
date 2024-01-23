@@ -3,7 +3,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Blog extends CI_Controller
 {
-	private $blog_image_dir = "";
 	public function __construct()
 	{
 		parent::__construct();

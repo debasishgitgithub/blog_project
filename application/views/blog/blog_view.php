@@ -17,6 +17,37 @@
     </div><!-- /.container-fluid -->
   </section>
 
+  <!-- Modal -->
+  <div class="modal fade" id="view_img_modal" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Blog images</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="card card-primary">
+            <div class="card-body">
+              <div class="row appendPlaceImg">
+                <!-- <div class="col-sm-2">
+                  <a href="https://via.placeholder.com/1200/FFFFFF.png?text=1" data-toggle="lightbox" data-title="sample 1 - white" data-gallery="gallery">
+                    <img src="https://via.placeholder.com/300/FFFFFF?text=1" class="img-fluid mb-2" alt="white sample">
+                  </a>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
@@ -31,8 +62,9 @@
             <thead>
               <tr>
                 <th style="width: 1%">S/L</th>
-                <th>Category Name</th>
                 <th>Title</th>
+                <th>Category Name</th>
+                <th>Image</th>
                 <th>Status</th>
                 <th>Created On</th>
                 <th>Action</th>
@@ -57,7 +89,7 @@
       autoWidth: false,
       serverSide: false,
       "ajax": {
-        "url": "<?= base_url('blog/get_all')?>",
+        "url": "<?= base_url('blog/get_all') ?>",
         "type": "get",
         // "data": function(d) {
         //   d.registration_no = $('#registration_no').val();
@@ -73,11 +105,13 @@
               // var dd = String(dateObj.getDate()).padStart(2, '0');
               let action_btns = {
                 'edit': `<a href="<?= base_url("blog/save/"); ?>${v.id}" class="btn btn-primary" title="Edit" data-toggle="tooltip"><i class="fas fa-edit"></i></a>`,
+                // 'view_img': `<button class="btn btn-success view_img" data-id="${v.id}"  title="View Image" data-toggle="tooltip"><i class="fas fa-images"></i></button>`
               };
               return [
                 ++i,
-                v.category_name,
                 v.title,
+                v.category_name,
+                `<button class="btn btn-success btn-sm view_img" data-id="${v.id}"  title="View Image" data-toggle="tooltip"><i class="fas fa-images"></i></button>`,
                 v.status == true ? `<span class="badge badge-success">Active</span>` : `<span class="badge badge-warning">Inactive</span>`,
                 v.create_on,
                 `<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">${Object.values(action_btns).join('')}</div>`
@@ -90,5 +124,50 @@
         },
       }
     });
+
+    $('body').on('click', '.view_img', function() {
+      const blog_id = $(this).data('id');
+      $.ajax({
+        url: `<?= base_url("blog_img/get_all") ?>`,
+        type: 'post',
+        dataType: 'json',
+        data: {
+          blog_id
+        },
+        beforeSend: function() {
+          $('.loading').show();
+        },
+        success: function(data) {
+          $('.loading').hide();
+          if (data.code == 200) {
+
+            let galleryImgElements = data.data.map((v,i)=>{
+              let str =  `<div class="col-sm-2">
+                  <a href="[[IMG_URL]]" data-toggle="lightbox" data-title="[[DATA_TITLE]]" data-gallery="gallery">
+                    <img src="[[IMG_URL]]" class="img-fluid mb-2" alt="[[IMG_URL]]">
+                  </a>
+                </div>`;
+
+                str =  str.replace('[[IMG_URL]]', v.img_name);
+                str =  str.replace('[[DATA_TITLE]]', `Image ${++i}`);
+                return  str.replace('[[IMG_URL]]', v.img_name);
+            });
+            // console.log(galleryImgElements);
+            // return ;
+            $(".card-body .appendPlaceImg").html('');
+            $(".card-body .appendPlaceImg").append(galleryImgElements.join(''));
+          } else {
+            toastr.error("Something is wrong");
+          }
+
+        },
+        error: function() {
+          $('.loading').hide();
+          toastr.error("Something is wrong");
+        }
+      });
+      $("#view_img_modal").modal('show');
+    });
+
   });
 </script>
