@@ -55,4 +55,12 @@ class Blog_img_model extends CI_Model
         $this->db->delete($this->table);
         return $this->db->affected_rows();
     }
+
+    public function delete_multiple($blog_id)
+    {
+        $this->db->where("blog_id", $blog_id);
+        $this->db->delete($this->table);
+        return $this->db->affected_rows();
+    }
+
 }

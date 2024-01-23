@@ -200,12 +200,37 @@ class Blog extends CI_Controller
 		}
 	}
 
-	public function get_all(){
+	public function get_all()
+	{
 		try {
-			if($data = $this->blog_model->get_all()){
+			if ($data = $this->blog_model->get_all()) {
 				return $this->http->response->create(200, "Data found successfully", $data);
 			} else {
 				return $this->http->response->create(203, "No data found");
+			}
+		} catch (\Throwable $th) {
+			return $this->http->response->serverError($th->getMessage());
+		}
+	}
+
+	public function delete($blog_id)
+	{
+		try {
+			$u = $this->http->auth(['post'], ['SUPER_ADMIN']);
+			if ($this->blog_model->delete($blog_id)) {
+				
+				if($images = $this->blog_img_model->get_all(null, $blog_id)){
+					array_map(function($row){
+						if(file_exists(FCPATH."documents/uploads/blog_img/". $row->img_name)){
+							unlink(FCPATH."documents/uploads/blog_img/". $row->img_name);
+						}
+					}, $images);
+					$this->blog_img_model->delete_multiple($blog_id);
+				}
+
+				return $this->http->response->create(200, "Delete successfully");
+			} else {
+				return $this->http->response->create(203, "Delete Failed");
 			}
 		} catch (\Throwable $th) {
 			return $this->http->response->serverError($th->getMessage());

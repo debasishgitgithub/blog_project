@@ -105,7 +105,7 @@
               // var dd = String(dateObj.getDate()).padStart(2, '0');
               let action_btns = {
                 'edit': `<a href="<?= base_url("blog/save/"); ?>${v.id}" class="btn btn-primary" title="Edit" data-toggle="tooltip"><i class="fas fa-edit"></i></a>`,
-                // 'view_img': `<button class="btn btn-success view_img" data-id="${v.id}"  title="View Image" data-toggle="tooltip"><i class="fas fa-images"></i></button>`
+                'delete': `<button class="btn btn-danger dlt_blog" data-id="${v.id}"  title="Delete blog" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></button>`
               };
               return [
                 ++i,
@@ -140,20 +140,18 @@
         success: function(data) {
           $('.loading').hide();
           if (data.code == 200) {
-
-            let galleryImgElements = data.data.map((v,i)=>{
-              let str =  `<div class="col-sm-2">
+            $("#view_img_modal").modal('show');
+            let galleryImgElements = data.data.map((v, i) => {
+              let str = `<div class="col-sm-2">
                   <a href="[[IMG_URL]]" data-toggle="lightbox" data-title="[[DATA_TITLE]]" data-gallery="gallery">
                     <img src="[[IMG_URL]]" class="img-fluid mb-2" alt="[[IMG_URL]]">
                   </a>
                 </div>`;
 
-                str =  str.replace('[[IMG_URL]]', v.img_name);
-                str =  str.replace('[[DATA_TITLE]]', `Image ${++i}`);
-                return  str.replace('[[IMG_URL]]', v.img_name);
+              str = str.replace('[[IMG_URL]]', v.img_name);
+              str = str.replace('[[DATA_TITLE]]', `Image ${++i}`);
+              return str.replace('[[IMG_URL]]', v.img_name);
             });
-            // console.log(galleryImgElements);
-            // return ;
             $(".card-body .appendPlaceImg").html('');
             $(".card-body .appendPlaceImg").append(galleryImgElements.join(''));
           } else {
@@ -166,7 +164,34 @@
           toastr.error("Something is wrong");
         }
       });
-      $("#view_img_modal").modal('show');
+    });
+
+
+    $('body').on('click', '.dlt_blog', function() {
+      const blog_id = $(this).data('id');
+      if (confirm('Are you Sure ?')) {
+        $.ajax({
+          url: `<?= base_url("blog/delete/") ?>${blog_id}`,
+          type: 'post',
+          dataType: 'json',
+          beforeSend: function() {
+            $('.loading').show();
+          },
+          success: function(data) {
+            $('.loading').hide();
+            if (data.code == 200) {
+              toastr.success(data.message);
+              table.ajax.reload();
+            } else {
+              toastr.error(data.message);
+            }
+          },
+          error: function() {
+            $('.loading').hide();
+            toastr.error("Something is wrong");
+          }
+        });
+      }
     });
 
   });
