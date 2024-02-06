@@ -30,6 +30,26 @@ if (!function_exists('view')) {
   }
 }
 
+if (!function_exists('public_view')) {
+  /**
+   *  @param string $token
+   *  @return mixed
+   */
+  function public_view($body_view_path = null, $bdata = [], $title = "Debasish Blog")
+  {
+    try {
+      $ci = &get_instance();
+      $ci->load->view("public/layout/header", ['title' => $title, 'Logo' => Logo, 'HF_title' => HF_title]);
+      if (!is_null($body_view_path)) {
+        $ci->load->view("public/".$body_view_path, $bdata);
+      }
+      $ci->load->view("public/layout/footer");
+    } catch (\Throwable $th) {
+      return false;
+    }
+  }
+}
+
 if (!function_exists('pp')) {
   function pp($value = null)
   {

@@ -29,16 +29,17 @@ $route['translate_uri_dashes'] = FALSE;
 
 
 //  ************************* PUBLIC *******************************
-$route['default_controller'] = 'welcome';
+$route['default_controller'] = 'home';
+$route['single-blog/(:num)'] = "home/single_view/$1";
 
 
 
 //  ************************* PORTAL *******************************
 
-$route['portal'] = 'home/index';
 
 // LOGIN AND DASHBOARD
 group_route("portal", [
+    "" => 'auth/index',
     "login" => 'auth/index',
     "logout" => 'auth/session_logout',
 

@@ -12,7 +12,7 @@ class Auth extends CI_Controller
 	{
 		try {
 			if ($this->http->session_gets()) {
-				redirect(portal_url(), 'refresh');
+				view('blog/dashboard');
 			} else {
 				$this->load->view('login_view');
 			}

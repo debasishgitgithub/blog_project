@@ -22,7 +22,7 @@ class Blog_model extends CI_Model
         return $this->db->get()->row();
     }
 
-    public function get_all($status = null,  $user_id = null)
+    public function get_all($status = null,  $user_id = null, $search_text = null, $limit = null, $offset = 0, $order = null)
     {
         $this->db->select("b.*, c.name AS category_name");
         $this->db->from("$this->table b");
@@ -32,6 +32,15 @@ class Blog_model extends CI_Model
         }
         if (!empty($user_id)) {
             $this->db->where("b.user_id", $user_id);
+        }
+        if (!empty($search_text)) {
+            $this->db->like('title', $search_text);
+        }
+        if (!empty($limit)) {
+            $this->db->limit($limit, $offset);
+        }
+        if (!empty($order)) {
+            $this->db->order_by($order['column'], strtoupper($order['direction']));
         }
         return $this->db->get()->result();
     }
@@ -65,5 +74,23 @@ class Blog_model extends CI_Model
         }
         $this->db->delete($this->table);
         return $this->db->affected_rows();
+    }
+
+    public function count_filter($status = null,  $user_id = null, $search_text = null)
+    {
+        $this->db->select("b.*, c.name AS category_name");
+        $this->db->from("$this->table b");
+        $this->db->join("$this->tbl_category c", "c.id = b.category_id");
+        if (!is_null($status)) {
+            $this->db->where("b.status", $status);
+        }
+        if (!empty($user_id)) {
+            $this->db->where("b.user_id", $user_id);
+        }
+        if (!empty($search_text)) {
+            $this->db->like('title', $search_text);
+        }
+        
+        return $this->db->count_all_results();
     }
 }

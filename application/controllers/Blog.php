@@ -54,11 +54,11 @@ class Blog extends CI_Controller
 							'label' => 'Content',
 							'rules' => 'required',
 						],
-						[
-							'field' => 'short_content',
-							'label' => 'short_content',
-							'rules' => 'required',
-						],
+						// [
+						// 	'field' => 'short_content',
+						// 	'label' => 'short_content',
+						// 	'rules' => 'required',
+						// ],
 						[
 							'field' => 'category_id',
 							'label' => 'Category',
@@ -203,8 +203,17 @@ class Blog extends CI_Controller
 	public function get_all()
 	{
 		try {
-			if ($data = $this->blog_model->get_all()) {
-				return $this->http->response->create(200, "Data found successfully", $data);
+			$length =  $this->input->get('limit') ?? null;
+			$offset =  $this->input->get('offset') ?? null;
+			$search_text =  $this->input->get('search_text') ?? null;
+			$order = [
+				'column' => 'id',
+				'direction' => 'desc'
+			];
+
+			if ($data = $this->blog_model->get_all(null, null,  $search_text, $length, $offset, $order)) {
+				$recordsTotal = $this->blog_model->count_filter(null, null, $search_text);
+				return $this->http->response->create(200, "Data found successfully", $data, ['recordsTotal' => $recordsTotal]);
 			} else {
 				return $this->http->response->create(203, "No data found");
 			}
@@ -218,11 +227,11 @@ class Blog extends CI_Controller
 		try {
 			$u = $this->http->auth(['post'], ['SUPER_ADMIN']);
 			if ($this->blog_model->delete($blog_id)) {
-				
-				if($images = $this->blog_img_model->get_all(null, $blog_id)){
-					array_map(function($row){
-						if(file_exists(FCPATH."documents/uploads/blog_img/". $row->img_name)){
-							unlink(FCPATH."documents/uploads/blog_img/". $row->img_name);
+
+				if ($images = $this->blog_img_model->get_all(null, $blog_id)) {
+					array_map(function ($row) {
+						if (file_exists(FCPATH . "documents/uploads/blog_img/" . $row->img_name)) {
+							unlink(FCPATH . "documents/uploads/blog_img/" . $row->img_name);
 						}
 					}, $images);
 					$this->blog_img_model->delete_multiple($blog_id);

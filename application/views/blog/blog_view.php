@@ -146,6 +146,7 @@
                   <a href="[[IMG_URL]]" data-toggle="lightbox" data-title="[[DATA_TITLE]]" data-gallery="gallery">
                     <img src="[[IMG_URL]]" class="img-fluid mb-2" alt="[[IMG_URL]]">
                   </a>
+                  
                 </div>`;
 
               str = str.replace('[[IMG_URL]]', v.img_name);
