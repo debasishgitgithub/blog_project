@@ -2,6 +2,19 @@
 <html lang="en">
 
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LVWXRC6XL1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'G-LVWXRC6XL1');
+  </script>
+  
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
@@ -12,7 +25,7 @@
   <script src="<?= base_url(); ?>assets/plugins/jquery/jquery.min.js"></script>
 
   <!-- Favicons -->
-  <link href="<?=base_url("public_assets/img/myicon.jpg");?>" rel="icon">
+  <link href="<?= base_url("public_assets/img/myicon.jpg"); ?>" rel="icon">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,15 +33,15 @@
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="<?=base_url("public_assets/vendor/bootstrap/css/bootstrap.min.css");?>" rel="stylesheet">
-  <link href="<?=base_url("public_assets/vendor/bootstrap-icons/bootstrap-icons.css");?>" rel="stylesheet">
-  <link href="<?=base_url("public_assets/vendor/swiper/swiper-bundle.min.css");?>" rel="stylesheet">
-  <link href="<?=base_url("public_assets/vendor/glightbox/css/glightbox.min.css");?>" rel="stylesheet">
-  <link href="<?=base_url("public_assets/vendor/aos/aos.css");?>" rel="stylesheet">
+  <link href="<?= base_url("public_assets/vendor/bootstrap/css/bootstrap.min.css"); ?>" rel="stylesheet">
+  <link href="<?= base_url("public_assets/vendor/bootstrap-icons/bootstrap-icons.css"); ?>" rel="stylesheet">
+  <link href="<?= base_url("public_assets/vendor/swiper/swiper-bundle.min.css"); ?>" rel="stylesheet">
+  <link href="<?= base_url("public_assets/vendor/glightbox/css/glightbox.min.css"); ?>" rel="stylesheet">
+  <link href="<?= base_url("public_assets/vendor/aos/aos.css"); ?>" rel="stylesheet">
 
   <!-- Template Main CSS Files -->
-  <link href="<?=base_url("public_assets/css/variables.css");?>" rel="stylesheet">
-  <link href="<?=base_url('public_assets/css/main.css');?>" rel="stylesheet">
+  <link href="<?= base_url("public_assets/css/variables.css"); ?>" rel="stylesheet">
+  <link href="<?= base_url('public_assets/css/main.css'); ?>" rel="stylesheet">
 </head>
 
 <body>
@@ -45,7 +58,7 @@
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a href="<?=base_url();?>">Blog</a></li>
+          <li><a href="<?= base_url(); ?>">Blog</a></li>
           <li class="dropdown"><a href="#"><span>Categories</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
             <ul>
               <li><a href="#">Search Result</a></li>
