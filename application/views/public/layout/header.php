@@ -46,7 +46,6 @@
       <nav id="navbar" class="navbar">
         <ul>
           <li><a href="<?=base_url();?>">Blog</a></li>
-          <li><a href="single-post.html">Single Post</a></li>
           <li class="dropdown"><a href="#"><span>Categories</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
             <ul>
               <li><a href="#">Search Result</a></li>
